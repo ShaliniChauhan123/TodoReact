@@ -3,3 +3,9 @@
   width: 1500px;
   text-align: center;
 }
+.text-strike {
+  text-decoration: line-through;
+}
+.text-none {
+  text-decoration: none;
+}

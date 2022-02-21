@@ -11,6 +11,7 @@ class App extends React.Component {
       todos: [],
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
   }
 
   handleChange(event) {
@@ -33,6 +34,17 @@ class App extends React.Component {
     console.log(clickedId);
     this.setState({
       todos: [...this.state.todos].filter((item) => item.id !== clickedId),
+    });
+  }
+  handleCheckboxChange(clickedId) {
+    console.log("zzzzz", clickedId);
+    this.setState({
+      todos: [...this.state.todos].map((item) => {
+        if (item.id === clickedId) {
+          item.completed = !item.completed;
+        }
+        return item;
+      }),
     });
   }
 
@@ -64,12 +76,15 @@ class App extends React.Component {
             <div key={todoDetail.id}>
               <TodoItem
                 key={todoDetail.id}
-                todos={todoDetail}
+                todos={todoDetail.completed}
                 title={todoDetail.task}
                 onClick={() => this.handleTodoDelete(todoDetail.id)}
                 value={todoDetail.task}
                 onChange={(e) =>
                   this.handleTodoEdit1(e.target.value, todoDetail.id)
+                }
+                handleCheckboxChange={() =>
+                  this.handleCheckboxChange(todoDetail.id)
                 }
               />
             </div>

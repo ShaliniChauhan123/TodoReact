@@ -6,27 +6,17 @@ class TodoItem extends React.Component {
     super(props);
     this.state = {
       inputMode: false,
-      isChecked: false,
     };
-    this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
-  }
-  handleCheckboxChange(event) {
-    this.setState({ isChecked: event.target.checked });
   }
 
   render() {
     return (
       <div
-        class="App"
         className="App"
         style={{ display: "flex", justifyContent: "space-around" }}
       >
         <div style={{ display: "flex", justifyContent: "space-around" }}>
-          <input
-            type="checkbox"
-            onChange={this.props.handleCheckboxChange}
-            checked={this.props.isChecked}
-          />
+          <input type="checkbox" onChange={this.props.handleCheckboxChange} />
 
           {this.state.inputMode ? (
             <input
@@ -39,7 +29,10 @@ class TodoItem extends React.Component {
               }}
             />
           ) : (
-            <div onClick={() => this.setState({ inputMode: true })}>
+            <div
+              className={this.props.todos ? "text-strike" : "text-none"}
+              onClick={() => this.setState({ inputMode: true })}
+            >
               {this.props.title}
             </div>
           )}
