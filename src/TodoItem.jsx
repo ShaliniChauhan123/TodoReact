@@ -11,33 +11,42 @@ class TodoItem extends React.Component {
 
   render() {
     return (
-      <div
-        className="App"
-        style={{ display: "flex", justifyContent: "space-around" }}
-      >
-        <div style={{ display: "flex", justifyContent: "space-around" }}>
-          <input type="checkbox" onChange={this.props.handleCheckboxChange} />
-
-          {this.state.inputMode ? (
+      <div className="App1">
+        <ul className="ulist">
+          <div className="part1" style={{ display: "flex" }}>
             <input
-              value={this.props.value}
-              onChange={this.props.onChange}
-              onKeyPress={(e) => {
-                if (e.key === "Enter") {
-                  this.setState({ inputMode: false });
-                }
-              }}
+              className="inputtext"
+              type="checkbox"
+              checked={this.props.todos}
+              onChange={this.props.handleCheckboxChange}
             />
-          ) : (
-            <div
-              className={this.props.todos ? "text-strike" : "text-none"}
-              onClick={() => this.setState({ inputMode: true })}
-            >
-              {this.props.title}
-            </div>
-          )}
-        </div>
-        <div onClick={this.props.onClick}>Delete</div>
+
+            <label>
+              {this.state.inputMode ? (
+                <input
+                  className="newtodocopy"
+                  value={this.props.value}
+                  onChange={this.props.onChange}
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter") {
+                      this.setState({ inputMode: false });
+                    }
+                  }}
+                />
+              ) : (
+                <div
+                  className={this.props.todos ? "text-strike" : "text-none"}
+                  onClick={() => this.setState({ inputMode: true })}
+                >
+                  {this.props.title}
+                </div>
+              )}
+            </label>
+          </div>{" "}
+          <div className="part2" onClick={this.props.onClick}>
+            x
+          </div>
+        </ul>
       </div>
     );
   }
