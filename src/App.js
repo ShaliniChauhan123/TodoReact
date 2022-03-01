@@ -1,9 +1,10 @@
-import "./styles.css";
+import "../src/styles.css";
 import React from "react";
 import { v4 as uuidv4 } from "uuid";
-import TodoItem from "./TodoItem";
-import expandMore from "./expandMore.svg";
-import expandMore1 from "./expandMore1.svg";
+import TodoItem from "./components/TodoItem";
+import Footer from "./components/Footer";
+import expandMore from "./assets/expandMore.svg";
+import expandMore1 from "./assets/expandMore1.svg";
 
 class App extends React.Component {
   constructor(props) {
@@ -11,7 +12,6 @@ class App extends React.Component {
     this.state = {
       title: "",
       todos: [],
-      todos1: [],
       mode: "All",
       change: "no",
     };
@@ -27,8 +27,11 @@ class App extends React.Component {
         if (this.state.change === "no" || item.completed === false) {
           item.completed = true;
           flag = 1;
-
-          this.setState({ change: "yes" });
+          if (
+            this.getCompletedCount(this.state.todos) !== this.state.todos.length
+          ) {
+            this.setState({ change: "yes" });
+          }
         }
 
         if (flag !== 1) {
@@ -87,18 +90,26 @@ class App extends React.Component {
         <div className="body1">
           <div className="division">
             <div className="first">
-              {this.state.change === "no" ? (
-                <img
-                  onClick={() => this.selectAll(this.state.todos)}
-                  src={expandMore}
-                  alt="expandMore"
-                />
+              {this.state.todos.length >= 1 ? (
+                <div>
+                  {this.state.change === "no" &&
+                  this.getCompletedCount(this.state.todos) !==
+                    this.state.todos.length ? (
+                    <img
+                      onClick={() => this.selectAll(this.state.todos)}
+                      src={expandMore}
+                      alt="expandMore"
+                    />
+                  ) : (
+                    <img
+                      onClick={() => this.selectAll(this.state.todos)}
+                      src={expandMore1}
+                      alt="expandMore1"
+                    />
+                  )}
+                </div>
               ) : (
-                <img
-                  onClick={() => this.selectAll(this.state.todos)}
-                  src={expandMore1}
-                  alt="expandMore1"
-                />
+                <div></div>
               )}
             </div>
             <div className="second">
@@ -117,8 +128,8 @@ class App extends React.Component {
 
                     this.setState({
                       todos: [...this.state.todos, newTask],
-                      todos1: [...this.state.todos, newTask],
                       title: "",
+                      change: "no",
                     });
                   }
                 }}
@@ -131,7 +142,7 @@ class App extends React.Component {
                 <div>
                   <TodoItem
                     key={todoDetail.id}
-                    todos={todoDetail.completed}
+                    completed={todoDetail.completed}
                     title={todoDetail.task}
                     onClick={() => this.handleTodoDelete(todoDetail.id)}
                     value={todoDetail.task}
@@ -145,14 +156,6 @@ class App extends React.Component {
                   />
                 </div>
               );
-
-              //(
-
-              // <div key={todoDetail.id} style={{ display: "flex" }}>
-              //   <div>{todoDetail.title}</div>
-              //   <div onClick={() => this.handleTodoDelete(todoDetail.id)}>D</div>
-              // </div>
-              //);
             })
           ) : (
             <div>
@@ -167,7 +170,7 @@ class App extends React.Component {
                   <div>
                     <TodoItem
                       key={todoDetail.id}
-                      todos={todoDetail.completed}
+                      completed={todoDetail.completed}
                       title={todoDetail.task}
                       onClick={() => this.handleTodoDelete(todoDetail.id)}
                       value={todoDetail.task}
@@ -180,90 +183,19 @@ class App extends React.Component {
                     />
                   </div>
                 );
-
-                //(
-
-                // <div key={todoDetail.id} style={{ display: "flex" }}>
-                //   <div>{todoDetail.title}</div>
-                //   <div onClick={() => this.handleTodoDelete(todoDetail.id)}>D</div>
-                // </div>
-                //);
               })}
             </div>
           )}
-          {this.state.todos.length !== 0 ? (
-            <div className="footer">
-              <div className="filters1">
-                <div className="spacingforfooter">
-                  {this.state.mode === "Completed"
-                    ? this.getCompletedCount(this.state.todos)
-                    : this.state.todos.length -
-                      this.getCompletedCount(this.state.todos)}
-                </div>
-
-                <div>
-                  {(this.state.mode === "All" &&
-                    this.state.todos.length -
-                      this.getCompletedCount(this.state.todos) ===
-                      1) ||
-                  (this.state.mode === "Active" &&
-                    this.state.todos.length -
-                      this.getCompletedCount(this.state.todos) ===
-                      1) ? (
-                    <span> item l</span>
-                  ) : (
-                    <div>
-                      {(this.state.mode === "All" &&
-                        this.state.todos.length -
-                          this.getCompletedCount(this.state.todos) !=
-                          1) ||
-                      (this.state.mode === "Active" &&
-                        this.state.todos.length -
-                          this.getCompletedCount(this.state.todos) !=
-                          1) ? (
-                        <span> items l</span>
-                      ) : (
-                        <div>
-                          {this.state.mode === "Completed" &&
-                          this.getCompletedCount(this.state.todos) === 1 ? (
-                            <span> item l</span>
-                          ) : (
-                            <span> items l</span>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
-                <span> eft</span>
-              </div>
-
-              <div className="filters2">
-                <ul>
-                  <li onClick={() => this.setState({ mode: "All" })}>All </li>
-                  <li onClick={() => this.setState({ mode: "Active" })}>
-                    Active{" "}
-                  </li>
-                  <li onClick={() => this.setState({ mode: "Completed" })}>
-                    Completed
-                  </li>
-                </ul>
-              </div>
-              {this.getCompletedCount(this.state.todos) >= 1 ? (
-                <div className="filters2">
-                  <ul>
-                    <li onClick={() => this.clearCompleted(this.state.todos)}>
-                      Clear completed
-                    </li>
-                  </ul>
-                </div>
-              ) : (
-                <div></div>
-              )}
-            </div>
-          ) : (
-            <div></div>
-          )}
+          <Footer
+            getCompletedCount={this.getCompletedCount(this.state.todos)}
+            todos={this.state.todos}
+            change={this.state.change}
+            mode={this.state.mode}
+            clearCompleted={() => this.clearCompleted(this.state.todos)}
+            set1={() => this.setState({ mode: "All" })}
+            set2={() => this.setState({ mode: "Active" })}
+            set3={() => this.setState({ mode: "Completed" })}
+          />
         </div>
       </div>
     );
