@@ -55,15 +55,33 @@ class Footer extends React.Component {
             <div className="filters2">
               <ul>
                 <li onClick={this.props.set1}>
-                  <a className="selected" href="#/all">
+                  <a
+                    className={
+                      this.props.mode === "All" ? "selected" : "bordernone"
+                    }
+                  >
                     All
                   </a>{" "}
                 </li>
                 <li onClick={this.props.set2}>
-                  <a href="#/active">Active</a>
+                  <a
+                    className={
+                      this.props.mode === "Active" ? "selected" : "bordernone"
+                    }
+                  >
+                    Active
+                  </a>
                 </li>
                 <li onClick={this.props.set3}>
-                  <a href="#/completed">Completed</a>
+                  <a
+                    className={
+                      this.props.mode === "Completed"
+                        ? "selected"
+                        : "bordernone"
+                    }
+                  >
+                    Completed
+                  </a>
                 </li>
               </ul>
             </div>
